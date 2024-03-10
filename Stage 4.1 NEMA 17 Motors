@@ -1,0 +1,58 @@
+#include <Stepper.h>
+
+const int stepsPerRevolution = 200;  // change this to fit the number of steps per revolution for your motor
+
+// initialize the stepper library for the stepper library
+const int motorPins[2][4] = {
+  {2, 3, 4, 5}, //Motor 1 pins
+  {6, 7, 8, 9} // Motor 2 pins
+};
+
+Stepper motors[2] = {
+  Stepper(stepsPerRevolution, motorPins[0][0], motorPins[0][1], motorPins[0][2], motorPins[0][3]),
+  Stepper(stepsPerRevolution, motorPins[1][0], motorPins[1][1], motorPins[1][2], motorPins[1][3]),
+};   
+
+int speed = 420;
+
+void setup() {
+  //Serial.begin(9600);
+  motors[0].setSpeed(speed); // Set the speed for motor 1
+  motors[1].setSpeed(speed); // Set the speed for motor 2
+}
+
+void loop() {
+  //Serial.println("Motor 2: Moving backward");    
+  BothForward();
+}
+
+  void stop(int motorIndex) {
+    Serial.print("Motor ");
+    Serial.print(motorIndex + 1);
+    Serial.println(": Stopped");
+    motors[motorIndex].step(0);
+}
+
+  void forward(int motorIndex) {
+    Serial.print("Motor ");
+    Serial.print(motorIndex + 1);
+    Serial.println(": Moving forward");
+    motors[motorIndex].step(stepsPerRevolution);
+}
+
+  void backward(int motorIndex) {
+    //Serial.print("Motor ");
+    //Serial.print(motorIndex + 1);
+    //Serial.println(": Moving backward");
+    motors[motorIndex].step(-stepsPerRevolution);
+}
+  void BothForward() {
+    motors[0].step(stepsPerRevolution);
+    motors[1].step(stepsPerRevolution);
+  }
+
+
+  void BothBackward() {
+    motors[0].step(-stepsPerRevolution);
+    motors[1].step(-stepsPerRevolution);
+  }
